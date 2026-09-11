@@ -70,7 +70,7 @@ Server: bfe
 
 安全测试中的用途：目录扫描时靠状态码判断资源是否存在——200 可访问、403 存在但禁止、404 不存在。
 
-## 7. 实验：用 Python 观察真实 HTTP
+## 7. 实验一：用 Python 观察真实 HTTP
 
 代码：`code/http1.py`
 
@@ -94,6 +94,15 @@ print(resp.headers)
 
 - 状态码：200
 - 响应头中可观察到 Content-Type、Server、Set-Cookie 等字段
+## 实验二：伪装浏览器（修改User-Agent）
+```python
+import requests
+
+headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/126.0"}
+resp = requests.get("https://www.baidu.com", headers=headers)
+print(resp.request.headers["User-Agent"])
+```
+- 在浏览器按F12->打开开发工具->Console(控制台)—>输入：navigator.userAgent
 
 ## 8. 安全视角
 
