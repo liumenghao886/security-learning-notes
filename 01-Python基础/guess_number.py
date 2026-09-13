@@ -1,4 +1,4 @@
-```
+
 import random
 
 secret = random.randint(1, 10)   # 随机生成 1-10 的数
@@ -16,4 +16,4 @@ while True:
     else:
         print(f"猜对了！答案是 {secret}，你一共猜了 {count} 次")
         break
-```
+
