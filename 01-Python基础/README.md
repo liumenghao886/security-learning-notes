@@ -42,7 +42,22 @@ for i in range(1, 101):
     total = total + i
 print(total)   # 5050
 ```
-
+### 打擂台+计数器
+```
+nums=[23,88,45,92,30,67]
+ #打擂台：找最大值
+m = nums[0]
+for x in nums:
+    if x>m:
+        m=x
+print("最大:",m)
+ #计数器:统计大于50的个数
+count = 0
+for x in nums:
+    if x > 50:
+        count = count + 1
+print("大于 50 的个数:", count)
+```
 ### 函数与复用
 
 ```python
