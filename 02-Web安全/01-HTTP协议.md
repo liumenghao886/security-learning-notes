@@ -103,7 +103,12 @@ resp = requests.get("https://www.baidu.com", headers=headers)
 print(resp.request.headers["User-Agent"])
 ```
 - 在浏览器按F12->打开开发工具->Console(控制台)—>输入：navigator.userAgent
-
+## 实验三：404实验
+```python
+import requests
+resp=requests.get("https://www.baidu.com/abc123")
+print("状态码：",resp.status_code) #应该是404
+```
 ## 8. 安全视角
 
 - **Server 响应头**可能泄露服务器软件及版本，攻击者可据此查找已知漏洞
