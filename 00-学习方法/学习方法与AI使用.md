@@ -37,5 +37,5 @@
 | Git for Windows | 版本管理 | ✅ 已安装 |
 | Python 3.13 | 编程语言 | ✅ 已安装 |
 | IDLE / Trae Code | 代码编辑器 | ✅ 已安装 |
-| Burp Suite Community | Web 抓包 | 🔄 待配置 |
+| Burp Suite Community | Web 抓包 | ✅ 已安装 |
 | BUUCTF / CTFHub | CTF 练习平台 | ⬜ 待注册 |
