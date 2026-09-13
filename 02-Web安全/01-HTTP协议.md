@@ -35,8 +35,8 @@ username=admin&password=123
 
 ```http
 HTTP/1.1 200 OK
-Content-Type: text/html; charset=utf-8
-Server: bfe
+Content-Type: text/html; charset=utf-8  #告诉客户端我返回的是什么类型
+Server: bfe   #服务器软件信息
 
 <!DOCTYPE html> ...
 ```
