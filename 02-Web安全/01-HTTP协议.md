@@ -19,7 +19,8 @@ GET /index.html HTTP/1.1
 Host: www.baidu.com
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)
 Cookie: name=value
-
+#请求头和请求体要空行
+username=admin&password=123
 ```
 
 | 部分 | 说明 |
