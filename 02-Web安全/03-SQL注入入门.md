@@ -54,19 +54,27 @@
 
 说明：这些目录表由 MySQL 自动维护，记录所有库、表、字段的元信息。
 
-## 6. 我的理解
+## 6.schema_name与 table_schema的区别
+-- ① 想知道有哪些数据库（列出所有库名）
+select schema_name from information_schema.schemata
+
+-- ② 想知道某个库里有哪些表（先靠 table_schema 筛选库）
+select table_name from information_schema.tables 
+where table_schema = 'sqli'
+
+## 7. 我的理解
 
 1. `order by` 前面要带上合法的 id 值，否则 `id=order by 2` 会报错
 2. 用 `union select` 时前面写 `-1`，是为了让原查询查不到数据，我们自己的结果才能显示出来
 3. 最后一步的两个 `flag`：一个在 `from` 后面（表名），一个在 `select` 和 `from` 之间（字段名）
 4. `information_schema` 是 MySQL 自动维护的"总目录"，记录了所有库、表、字段的名字，不知道表名/字段名时就靠它查出来
 
-## 7. 踩坑记录
+## 8. 踩坑记录
 
 - 一开始只写 `order by 2` 会报错，因为输入会被拼到 `id=` 后面，必须带上合法值：`1 order by 2`
 - 单行数据看不出排序变化，判断列数要看**报不报错**，不是看内容变没变
 
-## 8. 防御方法
+## 9. 防御方法
 
 ### 根本方法：参数化查询（预编译）
 
@@ -92,7 +100,7 @@ cursor.execute("select * from news where id=%s", (用户输入,))
 - 错误信息不外泄：不把 SQL 报错直接显示给用户
 - WAF：拦截常见注入特征（可能被绕过，不能只靠它）
 
-## 9. 漏洞报告示例（练习写报告）
+## 10. 漏洞报告示例（练习写报告）
 
 | 项目 | 内容 |
 |---|---|
@@ -103,10 +111,10 @@ cursor.execute("select * from news where id=%s", (用户输入,))
 | 危害说明 | 攻击者可读取数据库中任意数据；真实场景下可能导致用户账号密码泄露 |
 | 修复建议 | 使用参数化查询；限制数据库账号权限；不向前端泄露 SQL 错误信息 |
 
-## 10. 合规提醒
+## 11. 合规提醒
 
 所有实验仅在本人环境或授权靶场（CTFHub）中完成。未经授权对真实网站进行测试属于违法行为。
 
-## 11. 参考资料
+## 12. 参考资料
 
 - PortSwigger Web Security Academy：https://portswigger.net/web-security
