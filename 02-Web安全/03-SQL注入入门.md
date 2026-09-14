@@ -55,13 +55,15 @@
 说明：这些目录表由 MySQL 自动维护，记录所有库、表、字段的元信息。
 
 ## 6.schema_name与 table_schema的区别
--- ① 想知道有哪些数据库（列出所有库名）
+ ① 想知道有哪些数据库（列出所有库名）
+```
 select schema_name from information_schema.schemata
-
--- ② 想知道某个库里有哪些表（先靠 table_schema 筛选库）
+```
+ ② 想知道某个库里有哪些表（先靠 table_schema 筛选库）
+```
 select table_name from information_schema.tables 
 where table_schema = 'sqli'
-
+```
 ## 7. 我的理解
 
 1. `order by` 前面要带上合法的 id 值，否则 `id=order by 2` 会报错
